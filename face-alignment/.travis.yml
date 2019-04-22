@@ -1,0 +1,41 @@
+language: python
+python:
+  - "2.7"
+  - "3.5"
+
+addons:
+  apt_packages:
+    - gfortran
+
+notifications:
+  email: false
+
+install:
+  - sudo apt-get update
+  - sudo apt-get install cmake libboost-python-dev
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  # Useful for debugging any issues with conda
+  - conda info -a
+
+  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION pytorch -c soumith
+  - source activate test-environment
+  - travis_retry pip install --upgrade pip setuptools wheel
+  - travis_retry pip install -r requirements.txt
+  - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then pip install enum34; fi
+  - python setup.py install
+  - pip install --upgrade pytest
+
+script:
+  - pytest test/
+
+matrix:
+  include:
+    - env: LINT_CHECK
+      python: "2.7"
+      install: pip install flake8
+      script: flake8
