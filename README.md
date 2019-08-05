@@ -1,6 +1,6 @@
 # Loading Pytorch Model in C++
-## Implementation of DNN face landmark detector from python by https://github.com/1adrianb/face-alignment
-Please Refer []() for more details.
+Implementation of DNN face landmark detector from python by https://github.com/1adrianb/face-alignment \
+Please Refer to [here](https://github.com/1adrianb/face-alignment) for more details.
 --
 Prerequisite
 * Visual studio 2015/17
